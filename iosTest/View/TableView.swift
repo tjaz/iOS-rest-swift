@@ -22,7 +22,9 @@ class TableView: UITableView {
     
     var items: [RowItem] = [RowItem]()
     
-    var isPopulateLocked: Bool = false
+    var isPopulateLocked: Int = 2
+    
+    var cntSize: CGFloat = 0.0
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -37,10 +39,11 @@ extension TableView: UITableViewDelegate, UITableViewDataSource, TableDelegate
         if tableView == self
         {
             self.items += items
+            print(self.items)
             //self.contentOffset.y = 0
-            //self.reloadData()
-            //self.endUpdates()
-            self.isPopulateLocked = false
+            self.cntSize = self.contentSize.height
+            self.reloadData()
+            self.isPopulateLocked = 2
         }
     }
 
@@ -53,8 +56,8 @@ extension TableView: UITableViewDelegate, UITableViewDataSource, TableDelegate
             
             cell.mainImageView.image = items[indexPath.row].avatar_img
             
-            cell.mainLabelView.text = items[indexPath.row].login
-            cell.createdLabel.text = "\nRegistered: " + items[indexPath.row].created_at
+            cell.mainUsernameLabel.text = items[indexPath.row].login
+            cell.mainRegisteredLabel.text = "Registered: " + items[indexPath.row].created_at
         }
         return cell
     }
@@ -69,23 +72,33 @@ extension TableView: UITableViewDelegate, UITableViewDataSource, TableDelegate
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (self.isPopulateLocked) {
+        //self.reloadData()
+        if (self.isPopulateLocked > 1) {
+            //self.updateConstraints()
+            self.isPopulateLocked -= 1
+            return
+        }
+        if (self.isPopulateLocked < 1) {
             return
         }
         
-        if(self.contentOffset.y<0){
+        if(self.contentOffset.y<0 || self.items.count != self.numberOfRows(inSection: 0)){
             //it means table view is pulled down like refresh
             return;
         }
 
-        else if(self.contentOffset.y >= (self.contentSize.height - self.bounds.size.height)) {
+        else if(self.contentOffset.y >= (self.contentSize.height - self.bounds.size.height) && self.cntSize < self.contentSize.height) {
+            var num = self.numberOfRows(inSection: 0)
+            print("numberOfRows: \(num)")
+            print(self.contentOffset.y)
+            print(self.contentSize.height)
+            print(self.bounds.size.height)
             
-//            print("bottom!");
-            
+//            print("bottom!");            
             let appDelegate  = UIApplication.shared.delegate as! AppDelegate
             let viewController = appDelegate.window!.rootViewController as! ViewController
             viewController.requestPages()
-            self.isPopulateLocked = true
+            self.isPopulateLocked = 0
         }
     }
     }

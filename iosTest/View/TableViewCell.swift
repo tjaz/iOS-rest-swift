@@ -10,7 +10,8 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
     
-    @IBOutlet weak var createdLabel: UILabel!
+    @IBOutlet weak var mainUsernameLabel: UILabel!
+    @IBOutlet weak var mainRegisteredLabel: UILabel!
     @IBOutlet weak var mainImageView: UIImageView!
-    @IBOutlet weak var mainLabelView: UILabel!//
+    
 }

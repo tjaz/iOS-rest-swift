@@ -25,38 +25,38 @@
                             <constraint firstAttribute="width" secondItem="A4C-pk-Max" secondAttribute="height" multiplier="1:1" id="ZzH-bI-OS8"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCX-ie-JH4">
-                        <rect key="frame" x="116" y="8" width="248" height="44"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                        <color key="textColor" red="0.0" green="0.57919406890000003" blue="0.27452049852631527" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cr8-Z0-120">
+                        <rect key="frame" x="116" y="8" width="248" height="45"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                        <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSK-we-tM9">
-                        <rect key="frame" x="116" y="68" width="248" height="21"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaL-7t-3vb">
+                        <rect key="frame" x="116" y="61" width="248" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="ZCX-ie-JH4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="DMY-Qt-qwO"/>
-                    <constraint firstAttribute="trailing" secondItem="A4C-pk-Max" secondAttribute="trailing" constant="264" id="MX0-Bq-aDZ"/>
-                    <constraint firstItem="ZCX-ie-JH4" firstAttribute="leading" secondItem="A4C-pk-Max" secondAttribute="trailing" constant="8" id="WaP-PJ-bb6"/>
-                    <constraint firstItem="QSK-we-tM9" firstAttribute="top" secondItem="ZCX-ie-JH4" secondAttribute="bottom" constant="16" id="YXA-Hw-qG3"/>
-                    <constraint firstItem="QSK-we-tM9" firstAttribute="leading" secondItem="A4C-pk-Max" secondAttribute="trailing" constant="8" id="ZeC-fX-0n3"/>
-                    <constraint firstAttribute="trailing" secondItem="ZCX-ie-JH4" secondAttribute="trailing" constant="8" id="bJ9-6g-fhI"/>
+                    <constraint firstItem="AaL-7t-3vb" firstAttribute="leading" secondItem="A4C-pk-Max" secondAttribute="trailing" constant="8" id="0FM-dd-FHt"/>
+                    <constraint firstAttribute="trailing" secondItem="cr8-Z0-120" secondAttribute="trailing" constant="8" id="2NK-lJ-RQH"/>
+                    <constraint firstAttribute="bottom" secondItem="cr8-Z0-120" secondAttribute="bottom" constant="54.5" id="S2F-6f-MeC"/>
+                    <constraint firstItem="cr8-Z0-120" firstAttribute="leading" secondItem="A4C-pk-Max" secondAttribute="trailing" constant="8" id="UI0-g5-bIG"/>
+                    <constraint firstAttribute="trailing" secondItem="AaL-7t-3vb" secondAttribute="trailing" constant="8" id="aB3-3T-mrf"/>
                     <constraint firstAttribute="bottom" secondItem="A4C-pk-Max" secondAttribute="bottom" id="bqp-2X-Noa"/>
                     <constraint firstItem="A4C-pk-Max" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="iXq-eH-fYK"/>
                     <constraint firstItem="A4C-pk-Max" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="igp-SF-vcV"/>
-                    <constraint firstAttribute="trailing" secondItem="QSK-we-tM9" secondAttribute="trailing" constant="8" id="u63-IB-YGO"/>
-                    <constraint firstAttribute="bottom" secondItem="QSK-we-tM9" secondAttribute="bottom" constant="18.5" id="yle-9R-SPZ"/>
+                    <constraint firstAttribute="bottom" secondItem="AaL-7t-3vb" secondAttribute="bottom" constant="25.5" id="kQE-P8-TvH"/>
+                    <constraint firstItem="AaL-7t-3vb" firstAttribute="top" secondItem="cr8-Z0-120" secondAttribute="bottom" constant="8" id="qnq-gl-68E"/>
+                    <constraint firstItem="cr8-Z0-120" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="yYL-Pw-Sjt"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="createdLabel" destination="QSK-we-tM9" id="KlQ-co-3Rl"/>
                 <outlet property="mainImageView" destination="A4C-pk-Max" id="khX-xP-2h7"/>
-                <outlet property="mainLabelView" destination="ZCX-ie-JH4" id="lha-Dv-J1i"/>
+                <outlet property="mainRegisteredLabel" destination="AaL-7t-3vb" id="xJs-FB-o53"/>
+                <outlet property="mainUsernameLabel" destination="cr8-Z0-120" id="DDZ-cv-GBY"/>
             </connections>
             <point key="canvasLocation" x="51" y="84"/>
         </tableViewCell>
