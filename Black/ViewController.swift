@@ -165,7 +165,7 @@ class TableViewController: UITableViewController {
         
         if indexPath.row < cellItems.count {
             cell.mainImageView.image = cellItems[indexPath.row].avatar
-            //let date = cellItems[indexPath.row].registered
+            
             let date = cellItems[indexPath.row].registered
             let calendar = Calendar.current
             let year = calendar.component(.year, from: date)

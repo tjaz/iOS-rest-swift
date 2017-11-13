@@ -14,3 +14,4 @@ Each user item should contain at least:
 username
 avatar
 registration date
+* Bonus: order by username
