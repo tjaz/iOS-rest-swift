@@ -45,6 +45,9 @@ class TableViewController: UITableViewController {
     }
     
     let searchUsersUrl = "https://api.github.com/search/users"
+    
+    let perPage = 10
+    var nextPageCount = 1
     var nextPageURL = ""
     
     func pullUserData(completionHandler: @escaping ([UserInfo]?, Error?) -> Void) {
@@ -56,21 +59,21 @@ class TableViewController: UITableViewController {
                 if let responseHeader = response as? HTTPURLResponse {
                     
                     print(responseHeader)
-                    self.nextPageURL = ""
+//                    self.nextPageURL = ""
                     
-                    if let link = responseHeader.allHeaderFields["Link"] as? String {
-                        
-                        let array = link.components(separatedBy: "rel=\"next\"")
-                        if array.count > 1 {
-                            let second = array[1]
-                            if second.hasPrefix(",") {
-                                let open = second.split(separator: "<")[1]
-                                let close = open.split(separator: ">")[0]
-                                
-                                self.nextPageURL = String(close)
-                            }
-                        }
-                    }
+//                    if let link = responseHeader.allHeaderFields["Link"] as? String {
+//
+//                        let array = link.components(separatedBy: "rel=\"next\"")
+//                        if array.count > 1 {
+//                            let second = array[1]
+//                            if second.hasPrefix(",") {
+//                                let open = second.split(separator: "<")[1]
+//                                let close = open.split(separator: ">")[0]
+//
+//                                self.nextPageURL = String(close)
+//                            }
+//                        }
+//                    }
                 }
                 
                 if let responseData = data {
@@ -115,6 +118,9 @@ class TableViewController: UITableViewController {
     }
     
     func newRequest() {
+        
+        formNewURL(withPageNum: self.nextPageCount)
+        
         pullUserData() { (cells, error) in
             if error != nil {
                 print(error!)
@@ -125,10 +131,12 @@ class TableViewController: UITableViewController {
 
     }
     
+    func formNewURL(withPageNum num: Int) {
+        self.nextPageURL = searchUsersUrl + "?q=language:java&page=\(num*perPage)&per_page=\(perPage)"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.nextPageURL = searchUsersUrl + "?q=language:java&page=1&per_page=10"
         
         newRequest()
     }
@@ -157,7 +165,14 @@ class TableViewController: UITableViewController {
         
         if indexPath.row < cellItems.count {
             cell.mainImageView.image = cellItems[indexPath.row].avatar
-            cell.registeredLabel.text = cellItems[indexPath.row].registered.description
+            //let date = cellItems[indexPath.row].registered
+            let date = cellItems[indexPath.row].registered
+            let calendar = Calendar.current
+            let year = calendar.component(.year, from: date)
+            let month = calendar.component(.month, from: date)
+            let day = calendar.component(.day, from: date)
+            
+            cell.registeredLabel.text = "\(day). \(month). \(year)"
             cell.usernameLabel.text = cellItems[indexPath.row].username
         }
         
@@ -174,6 +189,7 @@ class TableViewController: UITableViewController {
             self.isDidScrollLocked = true
             
             //print("did scroll")
+            self.nextPageCount += 1
             self.newRequest()
         }
     }
