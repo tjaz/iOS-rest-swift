@@ -15,3 +15,10 @@ username
 avatar
 registration date
 * Bonus: order by username
+
+4. Show a more detailed screen of the user, when you click on a user item.
+
+Feel free to add any details you want.
+Mandatory details are the email address (in some cases it is not public, if so then just write "test@test.com") and number of followers.
+Position the number of followers on bottom left on tablets on on bottom right on phones.
+When clicking on the email address, open the default email app on the device.

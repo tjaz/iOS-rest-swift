@@ -8,17 +8,47 @@
 
 import UIKit
 
+enum UIUserInterfaceIdiom : Int {
+    case unspecified
+    
+    case phone // iPhone and iPod touch style UI
+    case pad   // iPad style UI
+}
+
 class UserInfo : NSObject
 {
+    let url: URL
     let username: String
     let registered: Date
     let avatar: UIImage
     
-    required init(_ username: String, _ created: Date, _ avatarImage: UIImage) {
+    required init(url: URL,  _ username: String, _ created: Date, _ avatarImage: UIImage) {
+        self.url = url
         self.username = username
         self.registered = created
         self.avatar = avatarImage
     }
+}
+
+struct DetailedUserInfo: Codable
+{
+    let type: String
+    let name: String?
+    let company: String?
+    let location: String
+    let email: String?
+    let following: Int
+}
+
+struct CollectedUserInfo {
+    let avatar: UIImage
+    let type: String
+    let name: String
+    let company: String // optional
+    let location: String
+    let email: String // optional
+    let following: Int
+    let isPhone: Bool
 }
 
 class TableViewController: UITableViewController {
@@ -59,21 +89,6 @@ class TableViewController: UITableViewController {
                 if let responseHeader = response as? HTTPURLResponse {
                     
                     print(responseHeader)
-//                    self.nextPageURL = ""
-                    
-//                    if let link = responseHeader.allHeaderFields["Link"] as? String {
-//
-//                        let array = link.components(separatedBy: "rel=\"next\"")
-//                        if array.count > 1 {
-//                            let second = array[1]
-//                            if second.hasPrefix(",") {
-//                                let open = second.split(separator: "<")[1]
-//                                let close = open.split(separator: ">")[0]
-//
-//                                self.nextPageURL = String(close)
-//                            }
-//                        }
-//                    }
                 }
                 
                 if let responseData = data {
@@ -101,7 +116,7 @@ class TableViewController: UITableViewController {
                         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
                         let date = dateFormatter.date(from: user.created_at)!
                         
-                        let userInfo: UserInfo = UserInfo(user.login, date, avatar)
+                        let userInfo: UserInfo = UserInfo(url: itemURL, user.login, date, avatar)
                         users.append(userInfo)
                         
                         print(user.login)
@@ -136,8 +151,7 @@ class TableViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+        super.viewDidLoad()       
         newRequest()
     }
     
@@ -196,6 +210,58 @@ class TableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(cellHeight)
+    }
+    
+    // open a detailed view for user information
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
+        
+        let decoder = JSONDecoder()
+        do {
+            let userData = try Data(contentsOf: cellItems[indexPath.row].url)
+            let userInfo = try decoder.decode(DetailedUserInfo.self, from: userData)
+            
+            let avatar = self.cellItems[indexPath.row].avatar
+            
+            let name: String!
+            if userInfo.name == nil {
+                name = ""
+            } else {
+                name = userInfo.name
+            }
+            
+            let company: String!
+            if userInfo.company == nil {
+                company = ""
+            } else {
+                company = userInfo.company!
+            }
+            
+            let mail: String!
+            if userInfo.email == nil {
+                mail = "test@test.si"
+            } else {
+                mail = userInfo.email!
+            }
+            
+            let isPhone: Bool!
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                isPhone = false
+            } else {
+                isPhone = true
+            }
+            
+            let collectedInfo: CollectedUserInfo = CollectedUserInfo(avatar: avatar, type: userInfo.type, name: name, company: company, location: userInfo.location, email: mail, following: userInfo.following, isPhone: isPhone)
+           
+            
+            let userInfoController = Bundle.main.loadNibNamed("UserInfoViewController", owner: self, options: nil)?.first as! UserInfoViewController
+            userInfoController.updateCellInformation(userInfo: collectedInfo)
+            
+            self.navigationController!.pushViewController(userInfoController, animated: true)
+        }
+        catch {
+            print(error)
+        }
+        
     }
 }
 

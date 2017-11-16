@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A547B39D1FBAF99100FAFFCF /* UserInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A547B39C1FBAF99100FAFFCF /* UserInfoViewController.xib */; };
 		A5978EF61FB73D380014860E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5978EF51FB73D380014860E /* AppDelegate.swift */; };
 		A5978EF81FB73D380014860E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5978EF71FB73D380014860E /* ViewController.swift */; };
 		A5978EFB1FB73D380014860E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5978EF91FB73D380014860E /* Main.storyboard */; };
@@ -19,10 +20,15 @@
 		A5978F161FB740210014860E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5978F141FB740210014860E /* LaunchScreen.storyboard */; };
 		A5978F1D1FB741040014860E /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5978F1B1FB741040014860E /* TableViewCell.swift */; };
 		A5978F1E1FB741040014860E /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5978F1C1FB741040014860E /* TableViewCell.xib */; };
+		A5E9075E1FBC940400A01F20 /* UserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E9075C1FBC940400A01F20 /* UserInfoCell.swift */; };
+		A5E9075F1FBC940400A01F20 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5E9075D1FBC940400A01F20 /* UserInfoCell.xib */; };
 		A5F9CD4F1FB901C500A47EB5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A5F9CD4E1FB901C500A47EB5 /* README.md */; };
+		A5F9CD531FBADAB200A47EB5 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F9CD521FBADAB200A47EB5 /* UserInfoViewController.swift */; };
+		A5FE72001FBD95DB003103EE /* UserInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FE71FF1FBD95DB003103EE /* UserInfoTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A547B39C1FBAF99100FAFFCF /* UserInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInfoViewController.xib; sourceTree = "<group>"; };
 		A5978EF31FB73D380014860E /* Blue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5978EF51FB73D380014860E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5978EF71FB73D380014860E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,7 +45,11 @@
 		A5978F171FB740210014860E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5978F1B1FB741040014860E /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		A5978F1C1FB741040014860E /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		A5E9075C1FBC940400A01F20 /* UserInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
+		A5E9075D1FBC940400A01F20 /* UserInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInfoCell.xib; sourceTree = "<group>"; };
 		A5F9CD4E1FB901C500A47EB5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		A5F9CD521FBADAB200A47EB5 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		A5FE71FF1FBD95DB003103EE /* UserInfoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +73,7 @@
 		A5978ED11FB73B170014860E = {
 			isa = PBXGroup;
 			children = (
+				A5F9CD4E1FB901C500A47EB5 /* README.md */,
 				A5978F0A1FB740210014860E /* Black */,
 				A5978EF41FB73D380014860E /* Blue */,
 				A5978EDB1FB73B170014860E /* Products */,
@@ -81,7 +92,6 @@
 		A5978EF41FB73D380014860E /* Blue */ = {
 			isa = PBXGroup;
 			children = (
-				A5F9CD4E1FB901C500A47EB5 /* README.md */,
 				A5978EF51FB73D380014860E /* AppDelegate.swift */,
 				A5978EF71FB73D380014860E /* ViewController.swift */,
 				A5978EF91FB73D380014860E /* Main.storyboard */,
@@ -99,7 +109,12 @@
 				A5978F0D1FB740210014860E /* ViewController.swift */,
 				A5978F0F1FB740210014860E /* Main.storyboard */,
 				A5978F1B1FB741040014860E /* TableViewCell.swift */,
+				A5F9CD521FBADAB200A47EB5 /* UserInfoViewController.swift */,
 				A5978F1C1FB741040014860E /* TableViewCell.xib */,
+				A547B39C1FBAF99100FAFFCF /* UserInfoViewController.xib */,
+				A5FE71FF1FBD95DB003103EE /* UserInfoTableView.swift */,
+				A5E9075C1FBC940400A01F20 /* UserInfoCell.swift */,
+				A5E9075D1FBC940400A01F20 /* UserInfoCell.xib */,
 				A5978F121FB740210014860E /* Assets.xcassets */,
 				A5978F141FB740210014860E /* LaunchScreen.storyboard */,
 				A5978F171FB740210014860E /* Info.plist */,
@@ -201,6 +216,8 @@
 			files = (
 				A5978F161FB740210014860E /* LaunchScreen.storyboard in Resources */,
 				A5978F1E1FB741040014860E /* TableViewCell.xib in Resources */,
+				A5E9075F1FBC940400A01F20 /* UserInfoCell.xib in Resources */,
+				A547B39D1FBAF99100FAFFCF /* UserInfoViewController.xib in Resources */,
 				A5978F131FB740210014860E /* Assets.xcassets in Resources */,
 				A5978F111FB740210014860E /* Main.storyboard in Resources */,
 			);
@@ -223,7 +240,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5978F1D1FB741040014860E /* TableViewCell.swift in Sources */,
+				A5F9CD531FBADAB200A47EB5 /* UserInfoViewController.swift in Sources */,
 				A5978F0E1FB740210014860E /* ViewController.swift in Sources */,
+				A5E9075E1FBC940400A01F20 /* UserInfoCell.swift in Sources */,
+				A5FE72001FBD95DB003103EE /* UserInfoTableView.swift in Sources */,
 				A5978F0C1FB740210014860E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
