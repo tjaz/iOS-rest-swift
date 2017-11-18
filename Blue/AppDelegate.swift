@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Blue
 //
-//  Created by Tjaz Hrovat on 11/11/2017.
+//  Created by Tjaz Hrovat on 17/11/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
