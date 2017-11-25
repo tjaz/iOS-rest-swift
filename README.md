@@ -22,3 +22,7 @@ Feel free to add any details you want.
 Mandatory details are the email address (in some cases it is not public, if so then just write "test@test.com") and number of followers.
 Position the number of followers on bottom left on tablets on on bottom right on phones.
 When clicking on the email address, open the default email app on the device.
+
+5. Create today app extension (widget) that displays the name of random github user that you loaded before (in step 3).
+
+Bonus: Upload your code to a repository and share the code with us so we can do a review (bitbucket, github, ...)

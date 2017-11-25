@@ -13,6 +13,7 @@
 		A51E021C1FBEBE47005E6791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A51E021B1FBEBE47005E6791 /* Assets.xcassets */; };
 		A51E021F1FBEBE47005E6791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51E021D1FBEBE47005E6791 /* LaunchScreen.storyboard */; };
 		A571C7EA1FC89F4F0085BA97 /* NetworkKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58D9D0F1FC820E5006E2F5E /* NetworkKit.framework */; };
+		A571C7EC1FC9590B0085BA97 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A571C7EB1FC9590B0085BA97 /* README.md */; };
 		A577E3F01FBF4BF80067FD89 /* LoadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A577E3EF1FBF4BF80067FD89 /* LoadViewController.xib */; };
 		A577E3F21FBF6EB60067FD89 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A577E3F11FBF6EB60067FD89 /* MainTableViewCell.swift */; };
 		A577E3F51FC09E920067FD89 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A577E3F31FC09E920067FD89 /* UserViewController.swift */; };
@@ -80,6 +81,7 @@
 		A51E021B1FBEBE47005E6791 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51E021E1FBEBE47005E6791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51E02201FBEBE47005E6791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A571C7EB1FC9590B0085BA97 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A577E3EF1FBF4BF80067FD89 /* LoadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadViewController.xib; sourceTree = "<group>"; };
 		A577E3F11FBF6EB60067FD89 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		A577E3F31FC09E920067FD89 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		A51E01F01FBEBDCD005E6791 = {
 			isa = PBXGroup;
 			children = (
+				A571C7EB1FC9590B0085BA97 /* README.md */,
 				A51E02131FBEBE47005E6791 /* Black */,
 				A58D9CDA1FC76FA9006E2F5E /* Blue */,
 				A58D9D101FC820E5006E2F5E /* NetworkKit */,
@@ -318,6 +321,7 @@
 				A577E3F01FBF4BF80067FD89 /* LoadViewController.xib in Resources */,
 				A577E3F61FC09E920067FD89 /* UserViewController.xib in Resources */,
 				A51E021F1FBEBE47005E6791 /* LaunchScreen.storyboard in Resources */,
+				A571C7EC1FC9590B0085BA97 /* README.md in Resources */,
 				A51E021C1FBEBE47005E6791 /* Assets.xcassets in Resources */,
 				A577E3FA1FC0B5660067FD89 /* UserTableViewCell.xib in Resources */,
 				A51E021A1FBEBE47005E6791 /* Main.storyboard in Resources */,
