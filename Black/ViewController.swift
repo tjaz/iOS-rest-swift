@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NetworkKit
 
 enum BackendError: Error {
     case urlError(reason: String)
@@ -79,64 +80,53 @@ class TableViewController: UITableViewController {
     var lastContentHeight: CGFloat = 0.0
     
     func parseJSON(completionHeader: @escaping ( [User]?, Error?) ->Void) {
-        guard let url = URL(string: searchUsersURL + "?q=language:java&page=\((page+1)*perPage)&per_page=\(perPage)") else {
-            return
-        }
         
-        let session: URLSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: nil, delegateQueue: OperationQueue.current)
-        session.dataTask(with: url) { (data, response, error) in
-            if let httpResponse = response {
-                print(httpResponse)
-            } else {
-                completionHeader(nil, BackendError.noResponse(reason: "header is null"))
-            }            
-            if let data = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                    
-                    let decoder = JSONDecoder()
-                    let body = try decoder.decode(ResponseBodyDecodable.self, from: data)
-                    
-                    var users :[User] = [User]()
-                    for item in body.items {
-                        guard let userURL = URL(string: item.url) else {
-                            completionHeader(nil, BackendError.urlError(reason: "unable to parse user url."))
-                            return
-                        }
-                        
-                        let userData = try Data(contentsOf: userURL)
-                        let userDecodable = try decoder.decode(UserDecodable.self, from: userData)
-                        
-                        // registered
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                        let regDate = dateFormatter.date(from: userDecodable.created_at)!
-                        
-                        // avatar
-                        guard let avatarURL = URL(string: userDecodable.avatar_url) else {
-                            completionHeader(nil, BackendError.urlError(reason: "unable to parse avatar url."))
-                            return
-                        }
-                        let avatarData = try Data(contentsOf: avatarURL)
-                        guard let avatar = UIImage(data: avatarData) else {
-                            completionHeader(nil, BackendError.objectSerialization(reason: "unable to create image."))
-                            return
-                        }
-                        print(userDecodable.login)
-                        print(userDecodable.created_at)
-                        
-                        users.append( User(url: userURL, username: userDecodable.login, avatar: avatar, registrationDate: regDate) )
+        // request user items by using networkig kit
+        Networking.requestUserItems(page: (self.page+1)*perPage, perPage: self.perPage, completionHeader: { (urlItems, error) in
+            
+            if let error = error {
+                completionHeader(nil, error)
+            }
+            
+            do {
+                var users :[User] = [User]()
+                let decoder = JSONDecoder()
+                
+                for urlItem in urlItems! {
+                    guard let userURL = URL(string: urlItem.url) else {
+                        completionHeader(nil, BackendError.urlError(reason: "unable to parse user url."))
+                        return
                     }
                     
-                    completionHeader(users, nil)
-                } catch {
-                    completionHeader(nil, error)
+                    let userData = try Data(contentsOf: userURL)
+                    let userDecodable = try decoder.decode(UserDecodable.self, from: userData)
+
+                    // registered
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    let regDate = dateFormatter.date(from: userDecodable.created_at)!
+
+                    // avatar
+                    guard let avatarURL = URL(string: userDecodable.avatar_url) else {
+                        completionHeader(nil, BackendError.urlError(reason: "unable to parse avatar url."))
+                        return
+                    }
+                    let avatarData = try Data(contentsOf: avatarURL)
+                    guard let avatar = UIImage(data: avatarData) else {
+                        completionHeader(nil, BackendError.objectSerialization(reason: "unable to create image."))
+                        return
+                    }
+                    print(userDecodable.login)
+                    print(userDecodable.created_at)
+
+                    users.append( User(url: userURL, username: userDecodable.login, avatar: avatar,   registrationDate: regDate) )
                 }
-            } else {
-                completionHeader(nil, BackendError.noResponse(reason: "body is null"))
+                completionHeader(users, nil)
+            } catch{
+                completionHeader(nil, error)
             }
-        }.resume()
+        })
+
     }
     
     func getJavaUsers(completionHandler: (() -> Void)?) {
