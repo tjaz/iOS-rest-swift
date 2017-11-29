@@ -25,4 +25,3 @@ When clicking on the email address, open the default email app on the device.
 
 5. Create today app extension (widget) that displays the name of random github user that you loaded before (in step 3).
 
-Bonus: Upload your code to a repository and share the code with us so we can do a review (bitbucket, github, ...)

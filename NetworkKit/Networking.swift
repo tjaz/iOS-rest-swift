@@ -2,68 +2,71 @@
 //  Networking.swift
 //  NetworkKit
 //
-//  Created by Tjaz Hrovat on 24/11/2017.
+//  Created by Tjaz Hrovat on 25/11/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit
 
-struct ResponseBodyDecodable : Codable{
-    let total_count: Int
-    let incomplete_results: Bool
-    let items: [ItemDecodable]
+public enum BackendError: Error {
+    case responseError(reason: String)
+    case urlError(reason: String)
 }
 
-public struct UserURL {
-    public let url: String
-}
-
-struct ItemDecodable : Codable {
-    let url: String
+public struct UserItem {
+    public let url: URL
 }
 
 public class Networking: NSObject {
     
-    enum BackendError: Error {
-        case noResponse(reason:String)
+    struct ItemCodable: Codable {
+        let url: String
     }
     
-    static let searchUsersURL = "https://api.github.com/search/users"
+    struct BodyCodable: Codable {
+        let total_count: Int
+        let incomplete_results: Bool
+        let items: [ItemCodable]
+    }
     
+    static let searchUsersLink = "https://api.github.com/search/users?q=language:java+type:user"
     
-    open static func requestUserItems(page: Int, perPage: Int, completionHeader: @escaping ( [UserURL]?, Error?) -> Void ) {
-               
-        guard let url = URL(string: searchUsersURL + "?q=language:java&page=\(page)&per_page=\(perPage)") else {
+    public static func requestJavaDevelopers(page: Int, perPage: Int, returnUser: @escaping (UserItem) throws -> Void, completionHandler: @escaping (Error?) -> Void) {
+        guard let url = URL(string: self.searchUsersLink + "&page=\(page)&per_page=\(perPage)") else {
             return
         }
+        let session = URLSession.shared
         
-        let session: URLSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: nil, delegateQueue: OperationQueue.current)
         session.dataTask(with: url) { (data, response, error) in
-            if let httpResponse = response {
-                print(httpResponse)
-            } else {
-                completionHeader(nil, BackendError.noResponse(reason: "header is null"))
-            }
-            if let data = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                    
-                    let decoder = JSONDecoder()
-                    let body = try decoder.decode(ResponseBodyDecodable.self, from: data)
-                    
-                    var urls: [UserURL] = [UserURL]()
-                    
-                    for item in body.items {
-                        urls.append( UserURL(url: item.url) )
-                    }
-                    
-                    completionHeader(urls, nil)
-                } catch {
-                    completionHeader(nil, error)
+            do {
+                
+                if let response = response {
+                    print(response)
                 }
+                
+                guard let data = data else {
+                    //print(data)
+                    throw BackendError.responseError(reason: "no data in response body.")
+                }
+                
+                //let json = try JSONSerialization.jsonObject(with: data, options: [])
+                //print(json)
+                
+                let decoder = JSONDecoder()
+                
+                let bodyCodable = try decoder.decode(BodyCodable.self, from: data)
+                
+                for item in bodyCodable.items {
+                    guard let userURL = URL(string: item.url) else {
+                        throw BackendError.urlError(reason: "invalid URL for user.")
+                    }
+                    try returnUser(UserItem(url: userURL))
+                }
+                
+                completionHandler(nil)
+            } catch {
+                completionHandler(error)
             }
         }.resume()
     }
-    
 }

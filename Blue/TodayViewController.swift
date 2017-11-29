@@ -2,7 +2,7 @@
 //  TodayViewController.swift
 //  Blue
 //
-//  Created by Tjaz Hrovat on 23/11/2017.
+//  Created by Tjaz Hrovat on 25/11/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
@@ -10,59 +10,43 @@ import UIKit
 import NotificationCenter
 import NetworkKit
 
-
 class TodayViewController: UIViewController, NCWidgetProviding {
     
-    enum BackendError: Error {
-        case urlError(reason:String)
-        case noResponse(reason:String)
+    struct UserCodable: Codable {
+        let login: String?
     }
     
-    struct User: Codable {
-        let name: String
+    @IBAction func mainAppButton(_ sender: Any) {
+        let appURL = URL(string: "Black://")!
+        self.extensionContext?.open(appURL, completionHandler: { (success) in
+            if success {
+                print("main app was successfully opened.")
+            }
+        })
     }
     
-    func random(max maxNumber: Int) -> Int {
-        return Int(arc4random_uniform(UInt32(maxNumber)))
+    @IBOutlet weak var developerNameLabel: UILabel!
+    
+    func random(top: Int) -> Int {
+        return Int(arc4random_uniform(UInt32(top)))
     }
-    
-    @IBOutlet weak var usernameLabel: UILabel!
-    
-    let items = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         
-        let randomPerson = random(max: self.items) + 1
-        
-        Networking.requestUserItems(page: randomPerson, perPage: 1) { (urlItems, error) in
-            
-            do {
-                if let error = error {
-                    throw error
-                }
-                
-                let decoder = JSONDecoder()
-                
-                for urlItem in urlItems! {
-                    guard let userURL = URL(string: urlItem.url) else {
-                        throw BackendError.urlError(reason: "unable to parse user url.")
-                    }
-                    
-                    let userData = try Data(contentsOf: userURL)
-                    let userDecodable = try decoder.decode(User.self, from: userData)
-
-                    print(userDecodable.name)
-                    
-                    self.usernameLabel.text = userDecodable.name
-                }
-                
-            } catch{
-                print( error )
+        Networking.requestJavaDevelopers(page: random(top: 10) + 1, perPage: 1, returnUser: { (item) in
+            let decoder = JSONDecoder()
+            let userData = try Data(contentsOf: item.url, options: [])
+            let userCodable = try decoder.decode(UserCodable.self, from: userData)
+            DispatchQueue.main.async {
+                self.developerNameLabel.text = userCodable.login
+            }
+        }) { (error) in
+            if error != nil {
+                print(error!)
             }
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
