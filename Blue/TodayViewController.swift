@@ -2,13 +2,13 @@
 //  TodayViewController.swift
 //  Blue
 //
-//  Created by Tjaz Hrovat on 25/11/2017.
+//  Created by Tjaz Hrovat on 02/12/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit
 import NotificationCenter
-import NetworkKit
+import NetworkingKit
 
 class TodayViewController: UIViewController, NCWidgetProviding {
     
@@ -16,36 +16,41 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         let login: String?
     }
     
-    @IBAction func mainAppButton(_ sender: Any) {
-        let appURL = URL(string: "Black://")!
-        self.extensionContext?.open(appURL, completionHandler: { (success) in
-            if success {
-                print("main app was successfully opened.")
-            }
-        })
-    }
-    
-    @IBOutlet weak var developerNameLabel: UILabel!
-    
-    func random(top: Int) -> Int {
+    func random(_ top: Int) -> Int {
         return Int(arc4random_uniform(UInt32(top)))
     }
     
+    @IBOutlet weak var userLabel: UILabel!
+    @IBAction func onButtonTapped(_ sender: Any) {
+        guard let blackURL = URL(string: "Black://") else {
+            return
+        }
+        self.extensionContext?.open(blackURL, completionHandler: { (opened) in
+            if opened {
+                print("BLACK OPENED")
+            }
+        })
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         
-        Networking.requestJavaDevelopers(page: random(top: 10) + 1, perPage: 1, returnUser: { (item) in
+        GithubConnect.getJavaDevelopers(page: random(10) + 1, perPage: 1, userCallback: { (url) in
             let decoder = JSONDecoder()
-            let userData = try Data(contentsOf: item.url, options: [])
-            let userCodable = try decoder.decode(UserCodable.self, from: userData)
-            DispatchQueue.main.async {
-                self.developerNameLabel.text = userCodable.login
+            let userData = try Data(contentsOf: url)
+            let userDecoded = try decoder.decode(UserCodable.self, from: userData)
+            if let username = userDecoded.login {
+                DispatchQueue.main.async {
+                    self.userLabel.text = username
+                }
             }
+            
         }) { (error) in
-            if error != nil {
-                print(error!)
+            if let error = error {
+                print(error)
+                return
             }
+            print("COMPLETE")
         }
     }
     

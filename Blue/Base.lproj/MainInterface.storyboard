@@ -17,34 +17,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
-                                <color key="backgroundColor" red="0.56476501463550455" green="0.7742056683925066" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <color key="textColor" red="1" green="0.41734387550000002" blue="0.55212637509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0g-0L-7zO">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
-                                <color key="tintColor" red="0.5149456415" green="0.67811487120000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puD-TP-HTX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
                                 <connections>
-                                    <action selector="mainAppButton:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="9uO-8r-HM5"/>
+                                    <action selector="onButtonTapped:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="Zt4-gD-cvu"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.52555358395057272" green="0.73035620025668957" blue="0.95883257772020725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="tintColor" red="0.5149456415" green="0.67811487120000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.83501659998977196" green="0.9172980615637808" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="GcN-lo-r42" secondAttribute="bottom" symbolic="YES" id="0Q0-KW-PJ6"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="0bK-JH-3gg"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" symbolic="YES" id="6Vq-gs-PHe"/>
+                            <constraint firstItem="puD-TP-HTX" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="IQx-sQ-cB3"/>
                             <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="GcN-lo-r42" secondAttribute="trailing" symbolic="YES" id="L8K-9R-egU"/>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="K0g-0L-7zO" secondAttribute="trailing" id="SuZ-sf-mYc"/>
-                            <constraint firstItem="K0g-0L-7zO" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="T70-RP-GmI"/>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="K0g-0L-7zO" secondAttribute="bottom" constant="1" id="WpS-Q2-sH7"/>
-                            <constraint firstItem="K0g-0L-7zO" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="eQ4-xk-b6Z"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="QD3-3i-OPF"/>
+                            <constraint firstItem="puD-TP-HTX" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="SdA-iL-snj"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="ZyV-oS-Wcv"/>
+                            <constraint firstItem="puD-TP-HTX" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="c6k-3e-foT"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="hph-wk-BIb"/>
+                            <constraint firstItem="puD-TP-HTX" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="m1n-E0-ULB"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" symbolic="YES" id="mYS-Cv-VNx"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
@@ -53,12 +51,12 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="37"/>
                     <connections>
-                        <outlet property="developerNameLabel" destination="GcN-lo-r42" id="RVe-Kp-DcR"/>
+                        <outlet property="userLabel" destination="GcN-lo-r42" id="TTq-Ga-F5H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="116.8" y="106.59670164917542"/>
+            <point key="canvasLocation" x="120" y="-78.710644677661179"/>
         </scene>
     </scenes>
 </document>
