@@ -14,49 +14,47 @@
             <objects>
                 <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="Blue" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.41734387550000002" blue="0.55212637509999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puD-TP-HTX">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
-                                <connections>
-                                    <action selector="onButtonTapped:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="Zt4-gD-cvu"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="4qG-NY-uJc">
+                                <rect key="frame" x="10" y="10" width="300" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="258" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xsi-dZ-pXo">
+                                        <rect key="frame" x="0.0" y="21.5" width="300" height="58.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                    </textView>
+                                </subviews>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.83501659998977196" green="0.9172980615637808" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.83955064469858853" green="0.92763615271274902" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="GcN-lo-r42" secondAttribute="bottom" symbolic="YES" id="0Q0-KW-PJ6"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="0bK-JH-3gg"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" symbolic="YES" id="6Vq-gs-PHe"/>
-                            <constraint firstItem="puD-TP-HTX" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="IQx-sQ-cB3"/>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="GcN-lo-r42" secondAttribute="trailing" symbolic="YES" id="L8K-9R-egU"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="QD3-3i-OPF"/>
-                            <constraint firstItem="puD-TP-HTX" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="SdA-iL-snj"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="ZyV-oS-Wcv"/>
-                            <constraint firstItem="puD-TP-HTX" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="c6k-3e-foT"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="hph-wk-BIb"/>
-                            <constraint firstItem="puD-TP-HTX" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="m1n-E0-ULB"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" symbolic="YES" id="mYS-Cv-VNx"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="4qG-NY-uJc" secondAttribute="bottom" constant="10" id="6Yz-Wz-HIw"/>
+                            <constraint firstItem="4qG-NY-uJc" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="10" id="7Cf-a1-tvL"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="4qG-NY-uJc" secondAttribute="trailing" constant="10" id="7PN-DL-bGw"/>
+                            <constraint firstItem="4qG-NY-uJc" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" constant="10" id="dK7-JP-78C"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="37"/>
+                    <size key="freeformSize" width="320" height="100"/>
                     <connections>
-                        <outlet property="userLabel" destination="GcN-lo-r42" id="TTq-Ga-F5H"/>
+                        <outlet property="blogTextView" destination="xsi-dZ-pXo" id="VvK-Go-AG6"/>
+                        <outlet property="stackView" destination="4qG-NY-uJc" id="Weh-t0-LHe"/>
+                        <outlet property="usernameLabel" destination="GcN-lo-r42" id="NBn-t9-4VE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="120" y="-78.710644677661179"/>
+            <point key="canvasLocation" x="-174.40000000000001" y="118.74062968515743"/>
         </scene>
     </scenes>
 </document>

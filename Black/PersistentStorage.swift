@@ -2,7 +2,7 @@
 //  PersistentStorage.swift
 //  Black
 //
-//  Created by Tjaz Hrovat on 02/12/2017.
+//  Created by Tjaz Hrovat on 14/12/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 

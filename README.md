@@ -14,7 +14,9 @@ Each user item should contain at least:
 username
 avatar
 registration date
-* Bonus: order by username
+
+* Bonus: temporary store users by using CoreData
+* Bonus: add animation notification if user data is 5 min old, enable reload
 
 4. Show a more detailed screen of the user, when you click on a user item.
 
@@ -23,5 +25,9 @@ Mandatory details are the email address (in some cases it is not public, if so t
 Position the number of followers on bottom left on tablets on on bottom right on phones.
 When clicking on the email address, open the default email app on the device.
 
+* Bonus: use static table view to present user information
+
 5. Create today app extension (widget) that displays the name of random github user that you loaded before (in step 3).
+
+*Bonus: Animate when displaying new developer name
 

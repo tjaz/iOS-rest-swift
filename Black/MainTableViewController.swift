@@ -1,37 +1,26 @@
 //
-//  ViewController.swift
+//  MainTableViewController.swift
 //  Black
 //
-//  Created by Tjaz Hrovat on 02/12/2017.
+//  Created by Tjaz Hrovat on 14/12/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit
-import NetworkingKit
+import GithubKit
 import CoreData
+
+enum BackendError: Error {
+    case storageError(reason: String)
+    case dataError(reason: String)
+}
 
 class MainTableViewController: UITableViewController {
     
-    enum BackendError: Error {
-        case dataError(reason: String)
-        case responseError(reason: String)
-    }
-    
-    struct DeveloperInformationCodable: Codable {
-        let name: String?
-        let company: String?
-        let blog: String?
-        let location: String?
-        let email: String?
-        let public_repos: Int
-        let followers: Int
-    }
-    
-    enum UserInterfaceIdiom {
-        case unspecified
-        
-        case phone
-        case pad
+    enum ReloadUsers {
+        case noReload
+        case partialReload
+        case reload
     }
     
     struct UserCodable: Codable {
@@ -39,165 +28,264 @@ class MainTableViewController: UITableViewController {
         let avatar_url: String
         let created_at: String
     }
-   
-    var developers: [Developer] = [Developer]()
+    
+    var reload: ReloadUsers = ReloadUsers.reload
     
     var page: Int {
-        return self.developers.count+1
+        return self.developers.count + 1
     }
-    var perPage:Int {
-        let rounded = self.developers.count % 10
-        return 10 - rounded
+    let numberOfPages: Int = 10
+    var perPage: Int {
+        let deviation = self.developers.count % self.numberOfPages
+        if deviation == 0 {
+            return numberOfPages
+        }
+        return self.numberOfPages - deviation
     }
+    @IBOutlet weak var notificationItem: UIBarButtonItem!
     
-    var isEndOfScroll = false
+    var developers = [JavaDeveloper]()
+    var isScrollerAtTheEnd = false
     var isLoadingData = false
     
-    var isFirstTime = true
+    @IBAction func onRefreshTapped(_ sender: Any) {
+        if !self.isLoadingData {
+            self.reloadUserData(completionHandler: { (error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                print("SUCCESSFULLY RELOADED DATA")
+            })
+        }
+    }
     
-    var alert: UIAlertController? = nil
-        
+    let obsoleteDataMinutes = 5
+    let partialyObsoleteDataMinutes = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let fetchRequest: NSFetchRequest<Developer> = Developer.fetchRequest()
         do {
-            // Try to fetch user data from the device storage
-            let developers = try PersistentStorage.context.fetch(fetchRequest)
-            self.developers = developers
-            // If there is no data yet, then load a new user data
-            if self.page == 1 {
-                self.loadUsers({ (error) -> Void in
-                    if let error = error {
-                        self.handleError(BackendError.responseError(reason: error.localizedDescription))
-                    }
-                })
-            
-            } else {
-                self.tableView.reloadData()
-            }
+            try checkUserData()
+
         } catch {
-            handleError(error)
+            print(error)
+            return
+        }
+        
+        switch reload {
+        case .reload:
+            if self.developers.count == 0 {
+                reloadUserData(completionHandler: { (error) in
+                    if let error = error {
+                        print(error)
+                        return
+                    }
+                    print("SUCCESSFULLY LOADED USERS ON APPLICATION START")
+                })
+            }
+            break
+        default:
+            break
+        }
+    }
+    
+    func triggerReloadDialog() {
+        let alert = UIAlertController(title: "Reload data", message: "Data hasn't been updated for more than \(obsoleteDataMinutes) minutes, do you wan't to update your data?", preferredStyle: UIAlertControllerStyle.alert)
+        let reloadAction = UIAlertAction(title: "Reload", style: UIAlertActionStyle.default) { (_) in
+            
+            self.reloadUserData(completionHandler: { (error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                print("SUCCESSULLY RELOADED DATA FROM DIALOG")
+            })
+        }
+        let refuseAction = UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil)
+        alert.addAction(reloadAction)
+        alert.addAction(refuseAction)
+        self.present(alert, animated: false) {
+            print("NOTIFICATION PRESERTED")
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.fromValue = CGPoint(x: alert.view.center.x - 5, y: alert.view.center.y)
+            animation.toValue = CGPoint(x: alert.view.center.x + 5, y: alert.view.center.y)
+            animation.duration = 0.08
+            animation.repeatCount = 5
+            animation.autoreverses = true
+            alert.view.layer.add(animation, forKey: "shake")
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // If there is data already in the device storage, then refresh table view or load fresh user data
-        if self.page > 1 && self.isFirstTime {
-            self.isFirstTime = false
-            let alert = UIAlertController(title: "Warning", message: "Developer data is obsolete, do you want to reload developer data? ", preferredStyle: UIAlertControllerStyle.alert)
-            let actionReload = UIAlertAction(title: "Reload", style: .default, handler: { (_) in
-                // Clear all saved users inside device storage.
-                for developer in self.developers {
-                    PersistentStorage.context.delete(developer)
+        do {
+            if !self.isLoadingData {
+                try checkUserData()
+                
+                switch self.reload {
+                case .noReload, .partialReload: break
+                default:
+                    triggerReloadDialog()
                 }
-                self.developers = []
-                self.tableView.reloadData()
-                // Load fresh users.
-                self.loadUsers({ (error) -> Void in
-                    if let error = error {
-                        self.handleError(BackendError.responseError(reason: error.localizedDescription))
-                    }
-                })
-            })
-        
-            alert.addAction(actionReload)
-            let actionPreserve = UIAlertAction(title: "No", style: .default, handler: nil)
-            alert.addAction(actionPreserve)
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-        // catch any alerts
-        if let alert = self.alert {
-            self.present(alert, animated: true, completion: nil)
-            self.alert = nil
-        }
-    }
-    
-    func handleError(_ error: Error) {
-        print(error)
-        if error is BackendError {
-            let backendError = error as! BackendError
-            switch backendError {
-            case BackendError.responseError:
-                let alert = UIAlertController(title: "Server error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
-                let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-                alert.addAction(action)
-                present(alert, animated: true, completion: nil)
-                break
-            default:
-                break
             }
+        } catch {
+            print(error)
         }
     }
     
-    func loadUsers(_ completionHandler: ((Error?) -> Void)? ) {
-        GithubConnect.getJavaDevelopers(page: self.page, perPage: self.perPage, userCallback: { (url) in
+    func checkUserData() throws -> Void {
+        
+        let fetchRequestDevelopers: NSFetchRequest<JavaDeveloper> = JavaDeveloper.fetchRequest()
+        
+        let developers = try PersistentStorage.context.fetch(fetchRequestDevelopers)
+        self.developers = developers
+        
+        let fetchRequestData: NSFetchRequest<DataInformation> = DataInformation.fetchRequest()
+        let info = try PersistentStorage.context.fetch(fetchRequestData)
+        let dataRecordCreated: DataInformation!
+        
+        if info.count > 0 {
+            dataRecordCreated = info[0]
+        } else {
+            dataRecordCreated = DataInformation(context: PersistentStorage.context)
+            dataRecordCreated.creation = NSDate(timeIntervalSince1970: NSTimeIntervalSince1970)
+            PersistentStorage.saveContext()
+        }
+        
+        let interval:Double = Date().timeIntervalSince(dataRecordCreated.creation as Date!)
+        let elapsedTimeInMinutes = Int64(interval) / 60
+        print("ELAPSED DATA TIME \(elapsedTimeInMinutes)")
+        if developers.count < numberOfPages || Int64(self.obsoleteDataMinutes) < elapsedTimeInMinutes {
+            reload = .reload
+            self.notificationItem.isEnabled = true
+            print("RELOAD")
+        } else if partialyObsoleteDataMinutes < elapsedTimeInMinutes {
+            reload = .partialReload
+            self.notificationItem.isEnabled = true
+            print("PARTIALY RELOAD")
+        } else {
+            reload = .noReload
+            print("NO NEED TO RELOAD")
+        }
+    }
+    
+    func reloadUserData(completionHandler: @escaping (Error?) -> Void) {
+        for developer in developers {
+            PersistentStorage.context.delete(developer)
+        }
+        PersistentStorage.saveContext()
+        self.developers = []
+        self.tableView.reloadData()
+        
+        getJavaDevelopers(completionHandler: { (error) in
+            do {
+                if let error = error {
+                    self.reload = .reload
+                    throw error
+                }
+                self.reload = ReloadUsers.noReload
+                
+                let fetchRequestData: NSFetchRequest<DataInformation> = DataInformation.fetchRequest()
+                let records = try PersistentStorage.context.fetch(fetchRequestData)
+                let dataRecord = records[0]
+                dataRecord.creation = NSDate()
+                PersistentStorage.saveContext()
+                
+                completionHandler(nil)
+            } catch {
+                completionHandler(error)
+            }
+            
+        })
+    }
+    
+    func getJavaDevelopers(completionHandler: @escaping (Error?) -> Void) {
+        self.isLoadingData = true
+        if self.reload != .noReload {
+            self.notificationItem.isEnabled = false
+        }
+        
+        GithubNetworking.getUsers(page: self.page, perPage: self.perPage, userCallback: {userURL in
             print("NEW USER")
+            
             let decoder = JSONDecoder()
-            let userData = try Data(contentsOf: url)
+            let userData = try Data(contentsOf: userURL)
             let userDecoded = try decoder.decode(UserCodable.self, from: userData)
             
             guard let avatarURL = URL(string: userDecoded.avatar_url) else {
-                throw NetworkingError.urlError(reason: "Invalid avatar url.")
+                throw NetworkingError.invalidUrl(reason: "invalid url for avatar image.")
             }
             let avatarData = try Data(contentsOf: avatarURL)
-            //let avatarImage = try UIImage(data: avatarData)
             
             let formater = DateFormatter()
-            formater.dateFormat = "yyyy-MM-dd'T'HH.mm.ssZ"
-            guard let date = formater.date(from: userDecoded.created_at) else {
-                throw BackendError.dataError(reason: "Could not parse date data.")
+            formater.dateFormat = "yyyy-MM-dd'T'HH.mm.ssz"
+            guard let registeredDate = formater.date(from: userDecoded.created_at) else {
+                throw BackendError.dataError(reason: "Can't covert date string into Date.")
             }
             
-            let developer: Developer = Developer(context: PersistentStorage.context)
+            let developer = JavaDeveloper(context: PersistentStorage.context)
+            developer.url = userURL
             developer.avatar = avatarData as NSData
-            developer.created = date as NSDate
             developer.username = userDecoded.login
-            developer.url = url
+            developer.registered = registeredDate as NSDate
+            
             PersistentStorage.saveContext()
             
-            self.developers.append(developer)
-            let index: IndexPath = IndexPath(indexes: [0, self.developers.count-1])
             print(developer.username!)
             
-            DispatchQueue.main.async {
-                // insert a new cell with developer into table
-                self.tableView.insertRows(at: [index], with: .fade)
-            }
+            self.developers.append(developer)
             
+            let indexPath = IndexPath(row: self.developers.count-1, section: 0)
+            
+            DispatchQueue.main.async {
+                self.tableView.insertRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            }
             
         }) { (error) in
-            if let error = error {
-                completionHandler!(error)
+            self.isLoadingData = false
+            if self.reload != .noReload {
+                DispatchQueue.main.async {
+                    self.notificationItem.isEnabled = true
+                }
             }
-            completionHandler!(nil)
+            
+            if let error = error {
+                completionHandler(error)
+                return
+            }
             print("COMPLETE")
+            completionHandler(nil)
         }
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.developers.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mainTableCell") as! MainTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! MainTableViewCell
+        
+        // Configure the cell...
         let developer = developers[indexPath.row]
+        if let avatarData = developer.avatar as Data? {
+            cell.avatarImage.image = UIImage(data: avatarData)
+        }
         cell.usernameLabel.text = developer.username
-        cell.avatarImage.image = UIImage(data: developer.avatar as Data!)
-
-        let date = developer.created as Date!
-        let day = Calendar.current.component(.day, from: date!)
-        let month = Calendar.current.component(.month, from: date!)
-        let year = Calendar.current.component(.year, from: date!)
-        let months = ["January", "February", "March", "April", "May", "June", "July", "Aughust", "September", "October", "November", "December"]
-        cell.dateLabel.text = "\(day) \(months[month-1]) \(year)"
-
+        let date = developer.registered as Date?
+        let day = Calendar.current.component(Calendar.Component.day, from: date!)
+        let month = Calendar.current.component(Calendar.Component.month, from: date!)
+        let year = Calendar.current.component(Calendar.Component.year, from: date!)
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "Septmeber", "October", "November", "December"]
+        cell.registeredLabel.text = "\(day) \(months[month-1]) \(year)"
+        
         return cell
     }
     
@@ -206,98 +294,90 @@ class MainTableViewController: UITableViewController {
             return
         }
         
-        if self.isEndOfScroll && scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.bounds.size.height) {
-            self.isEndOfScroll = false
+        if self.isScrollerAtTheEnd && scrollView.contentOffset.y < (scrollView.contentSize.height - scrollView.bounds.size.height) {
+            self.isScrollerAtTheEnd = false
         }
-        else if !self.isEndOfScroll && scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height) {
-            print("END OF SCROLL")
-            self.isEndOfScroll = true
-            self.isLoadingData = true
+        else if !self.isScrollerAtTheEnd && scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height) {
             
-            loadUsers({ (error) -> Void in
-                self.isLoadingData = false
-                if let error = error {
-                    self.handleError(error)
-                    return
-                }
-            })
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if let controller = segue.destination as? UserViewController {
-            //controller.performSegue(withIdentifier: "loading", sender: nil)
-            let cell = sender as! MainTableViewCell
-            let indexPath = self.tableView.indexPath(for: cell)!
-            DispatchQueue.global(qos: .background).async {
-                do {
-                    let developer = self.developers[indexPath.row]
-                    let userURL = developer.url!
-                    let userData = try Data(contentsOf: userURL)
+            self.isScrollerAtTheEnd = true
+            print("OVER THE EDGE")
+            
+            do {
+                try checkUserData()
+            } catch {
+                print(error)
+                return
+            }
+            switch reload {
+            case .reload:
+                triggerReloadDialog()
+                break
+            default:
+                getJavaDevelopers(completionHandler: { (error) in
                     
-                    let decoder = JSONDecoder()
-                    let developerDecoded = try decoder.decode(DeveloperInformationCodable.self, from: userData)
-                    
-                    var name = ""
-                    if developerDecoded.name != nil {
-                        name = developerDecoded.name!
+                    if let error = error {
+                        print(error)
+                        return
                     }
-                    var company = ""
-                    if developerDecoded.company != nil {
-                        company = developerDecoded.company!
-                    }
-                    var blog: URL? = nil
-                    if developerDecoded.blog != nil {
-                        if let blogURL = URL(string: developerDecoded.blog!) {
-                            blog = blogURL
-                        } else {
-                            print("Warning: could not parse blog url.")
-                        }
-                    }
-                    var location = ""
-                    if developerDecoded.location != nil {
-                        location = developerDecoded.location!
-                    }
-                    var email = "test@test.com"
-                    if developerDecoded.email != nil {
-                        email = developerDecoded.email!
-                    }
-                    
-                    var phone = false
-                    if .phone == UIDevice.current.userInterfaceIdiom {
-                        phone = true
-                    }
-                    
-                    let avatar = cell.avatarImage
-                    
-                    controller.attributes = ["Name", "Company", "Location", "Email", "Blog", "Repositories"]
-                    controller.values = [name, company, location, email, blog, developerDecoded.public_repos]
-                    
-                    DispatchQueue.main.async {
-                        // force the destination controller view to load
-                        let _ = controller.view
-                        controller.avatarImage.image = avatar!.image!
-                        if !phone {
-                            controller.followersLabel.textAlignment = .right
-                        }
-                        controller.followersLabel.text = "Followers: " + String(developerDecoded.followers)
-                        // now remove the loading view controller from the parent view controller
-                        controller.isDataLoaded = true
-                        controller.dismiss(animated: true, completion: nil)
-                        controller.informationTable.reloadData()
-                    }
-                } catch {
-                    self.navigationController?.popViewController(animated: false)
-                    let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil )
-                    alert.addAction(action)
-                    self.alert = alert
-                    
-                    self.handleError(error)
-                }
+                })
+                break
             }
         }
     }
-}
+    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//
+//    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let userVC = (segue.destination as? UserTableViewController) {
+            userVC.developer = developers[self.tableView.indexPathForSelectedRow!.row]
+        }
+    }
 
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    */
+
+    /*
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }    
+    }
+    */
+
+    /*
+    // Override to support rearranging the table view.
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+
+    }
+    */
+
+    /*
+    // Override to support conditional rearranging of the table view.
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the item to be re-orderable.
+        return true
+    }
+    */
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

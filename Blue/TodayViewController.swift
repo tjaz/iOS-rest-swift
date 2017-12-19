@@ -2,55 +2,68 @@
 //  TodayViewController.swift
 //  Blue
 //
-//  Created by Tjaz Hrovat on 02/12/2017.
+//  Created by Tjaz Hrovat on 14/12/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit
 import NotificationCenter
-import NetworkingKit
+import GithubKit
 
-class TodayViewController: UIViewController, NCWidgetProviding {
+class TodayViewController: UIViewController, NCWidgetProviding, UIGestureRecognizerDelegate {
     
     struct UserCodable: Codable {
-        let login: String?
+        let login: String
+        let blog: String
     }
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var blogTextView: UITextView!
     
-    func random(_ top: Int) -> Int {
+    func random(top: Int) -> Int {
         return Int(arc4random_uniform(UInt32(top)))
     }
     
-    @IBOutlet weak var userLabel: UILabel!
-    @IBAction func onButtonTapped(_ sender: Any) {
+    @objc func onViewTapped() {
+        print("ON VIEW TAPPED")
         guard let blackURL = URL(string: "Black://") else {
             return
         }
         self.extensionContext?.open(blackURL, completionHandler: { (opened) in
             if opened {
-                print("BLACK OPENED")
+                print("APP OPENED")
             }
         })
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view from its nib.
         
-        GithubConnect.getJavaDevelopers(page: random(10) + 1, perPage: 1, userCallback: { (url) in
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
+        tapGestureRecognizer.delegate = self
+        stackView.addGestureRecognizer(tapGestureRecognizer)
+        
+        GithubNetworking.getUsers(page: random(top: 10) + 1, perPage: 1, userCallback: { (url) in
             let decoder = JSONDecoder()
-            let userData = try Data(contentsOf: url)
-            let userDecoded = try decoder.decode(UserCodable.self, from: userData)
-            if let username = userDecoded.login {
-                DispatchQueue.main.async {
-                    self.userLabel.text = username
-                }
+            let userData = try Data(contentsOf: url, options: [])
+            let userDecoded =  try decoder.decode(UserCodable.self, from: userData)
+            
+            let animation = CABasicAnimation(keyPath: "opacity")
+            animation.duration = 1
+            animation.fromValue = NSNumber(value: 0)
+            animation.toValue = NSNumber(value: 1)
+            DispatchQueue.main.async {
+                self.usernameLabel.text = userDecoded.login
+                self.blogTextView.text = userDecoded.blog
+                self.stackView.layer.add(animation, forKey: "fadein")
             }
             
+            
+            print(userDecoded.login)
         }) { (error) in
             if let error = error {
                 print(error)
-                return
             }
-            print("COMPLETE")
         }
     }
     
