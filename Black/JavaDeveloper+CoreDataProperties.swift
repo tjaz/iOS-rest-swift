@@ -1,8 +1,8 @@
 //
 //  JavaDeveloper+CoreDataProperties.swift
-//  GithubKit
+//  Black
 //
-//  Created by Tjaz Hrovat on 14/12/2017.
+//  Created by Tjaz Hrovat on 27/12/2017.
 //  Copyright © 2017 Tjaz Hrovat. All rights reserved.
 //
 //
@@ -17,9 +17,9 @@ extension JavaDeveloper {
         return NSFetchRequest<JavaDeveloper>(entityName: "JavaDeveloper")
     }
 
-    @NSManaged public var url: URL?
-    @NSManaged public var avatar: NSData?
     @NSManaged public var username: String?
+    @NSManaged public var avatar: NSData?
     @NSManaged public var registered: NSDate?
+    @NSManaged public var url: URL?
 
 }

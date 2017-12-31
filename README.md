@@ -15,8 +15,8 @@ username
 avatar
 registration date
 
-* Bonus: temporary store users by using CoreData
-* Bonus: add animation notification if user data is 5 min old, enable reload
+* Bonus: store users using CoreData
+* Bonus: add animation notification if user data is older than 5 min and mandatory after 15 min
 
 4. Show a more detailed screen of the user, when you click on a user item.
 

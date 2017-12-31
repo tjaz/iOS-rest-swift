@@ -14,47 +14,52 @@
             <objects>
                 <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="Blue" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="4qG-NY-uJc">
-                                <rect key="frame" x="10" y="10" width="300" height="80"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jBq-Z3-sbK">
+                                <rect key="frame" x="16" y="0.0" width="288" height="162"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="258" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki0-Ng-N2U">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="77"/>
+                                        <color key="backgroundColor" red="1" green="0.90130376253943689" blue="0.81786776021952423" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xsi-dZ-pXo">
-                                        <rect key="frame" x="0.0" y="21.5" width="300" height="58.5"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Blog" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbC-Zu-ogv">
+                                        <rect key="frame" x="0.0" y="85" width="288" height="77"/>
+                                        <color key="backgroundColor" red="0.80446269136825765" green="1" blue="0.77266556551313093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                     </textView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="ki0-Ng-N2U" firstAttribute="height" secondItem="gbC-Zu-ogv" secondAttribute="height" id="uWs-W6-5cL"/>
+                                </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.83955064469858853" green="0.92763615271274902" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="4qG-NY-uJc" secondAttribute="bottom" constant="10" id="6Yz-Wz-HIw"/>
-                            <constraint firstItem="4qG-NY-uJc" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="10" id="7Cf-a1-tvL"/>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="4qG-NY-uJc" secondAttribute="trailing" constant="10" id="7PN-DL-bGw"/>
-                            <constraint firstItem="4qG-NY-uJc" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" constant="10" id="dK7-JP-78C"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="jBq-Z3-sbK" secondAttribute="bottom" constant="38" id="PtJ-CG-Tmu"/>
+                            <constraint firstItem="jBq-Z3-sbK" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="YlM-O1-iWp"/>
+                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="jBq-Z3-sbK" secondAttribute="trailing" constant="16" id="uAO-Om-nae"/>
+                            <constraint firstItem="jBq-Z3-sbK" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="16" id="vYu-fE-9hw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="100"/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
-                        <outlet property="blogTextView" destination="xsi-dZ-pXo" id="VvK-Go-AG6"/>
-                        <outlet property="stackView" destination="4qG-NY-uJc" id="Weh-t0-LHe"/>
-                        <outlet property="usernameLabel" destination="GcN-lo-r42" id="NBn-t9-4VE"/>
+                        <outlet property="blogTexView" destination="gbC-Zu-ogv" id="30Y-ak-1yQ"/>
+                        <outlet property="stackView" destination="jBq-Z3-sbK" id="tZJ-de-xBu"/>
+                        <outlet property="usernameLabel" destination="ki0-Ng-N2U" id="ved-ic-W9f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-174.40000000000001" y="118.74062968515743"/>
+            <point key="canvasLocation" x="116.8" y="116.94152923538232"/>
         </scene>
     </scenes>
 </document>

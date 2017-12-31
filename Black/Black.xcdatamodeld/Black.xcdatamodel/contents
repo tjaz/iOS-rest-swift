@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="DataInformation" representedClassName="DataInformation" syncable="YES">
-        <attribute name="creation" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    <entity name="DataRecord" representedClassName="DataRecord" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <entity name="JavaDeveloper" representedClassName="JavaDeveloper" syncable="YES">
         <attribute name="avatar" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -11,6 +11,6 @@
     </entity>
     <elements>
         <element name="JavaDeveloper" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="DataInformation" positionX="-54" positionY="18" width="128" height="60"/>
+        <element name="DataRecord" positionX="-54" positionY="18" width="128" height="60"/>
     </elements>
 </model>
