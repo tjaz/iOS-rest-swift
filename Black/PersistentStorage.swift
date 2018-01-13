@@ -2,8 +2,8 @@
 //  PersistentStorage.swift
 //  Black
 //
-//  Created by Tjaz Hrovat on 27/12/2017.
-//  Copyright © 2017 Tjaz Hrovat. All rights reserved.
+//  Created by Tjaz Hrovat on 06/01/2018.
+//  Copyright © 2018 Tjaz Hrovat. All rights reserved.
 //
 
 import Foundation
@@ -12,7 +12,7 @@ import CoreData
 class PersistentStorage {
     
     static var context: NSManagedObjectContext {
-        return PersistentStorage.persistentContainer.viewContext
+        return persistentContainer.viewContext
     }
     
     // MARK: - Core Data stack
@@ -51,7 +51,6 @@ class PersistentStorage {
         if context.hasChanges {
             do {
                 try context.save()
-                print("SAVED")
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.

@@ -17,34 +17,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jBq-Z3-sbK">
-                                <rect key="frame" x="16" y="0.0" width="288" height="162"/>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IuU-zC-WkD">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki0-Ng-N2U">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="77"/>
-                                        <color key="backgroundColor" red="1" green="0.90130376253943689" blue="0.81786776021952423" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZI-cj-TmG">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                                        <color key="backgroundColor" red="1" green="0.94125084492899358" blue="0.7362439666334164" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Blog" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbC-Zu-ogv">
-                                        <rect key="frame" x="0.0" y="85" width="288" height="77"/>
-                                        <color key="backgroundColor" red="0.80446269136825765" green="1" blue="0.77266556551313093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Blog" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="wP3-lC-TST">
+                                        <rect key="frame" x="0.0" y="100" width="320" height="100"/>
+                                        <color key="backgroundColor" red="0.78810097369999998" green="1" blue="0.75957459049999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                     </textView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="ki0-Ng-N2U" firstAttribute="height" secondItem="gbC-Zu-ogv" secondAttribute="height" id="uWs-W6-5cL"/>
+                                    <constraint firstItem="wP3-lC-TST" firstAttribute="height" secondItem="YZI-cj-TmG" secondAttribute="height" id="4hh-LA-Bte"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="bottom" secondItem="jBq-Z3-sbK" secondAttribute="bottom" constant="38" id="PtJ-CG-Tmu"/>
-                            <constraint firstItem="jBq-Z3-sbK" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="YlM-O1-iWp"/>
-                            <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="jBq-Z3-sbK" secondAttribute="trailing" constant="16" id="uAO-Om-nae"/>
-                            <constraint firstItem="jBq-Z3-sbK" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" constant="16" id="vYu-fE-9hw"/>
+                            <constraint firstItem="IuU-zC-WkD" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" id="OcA-14-jHU"/>
+                            <constraint firstItem="IuU-zC-WkD" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="TpU-NO-tnF"/>
+                            <constraint firstItem="IuU-zC-WkD" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="lzj-xW-ond"/>
+                            <constraint firstItem="IuU-zC-WkD" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="mkS-q9-8Fr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ssy-KU-ocm"/>
                     </view>
@@ -52,9 +52,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
-                        <outlet property="blogTexView" destination="gbC-Zu-ogv" id="30Y-ak-1yQ"/>
-                        <outlet property="stackView" destination="jBq-Z3-sbK" id="tZJ-de-xBu"/>
-                        <outlet property="usernameLabel" destination="ki0-Ng-N2U" id="ved-ic-W9f"/>
+                        <outlet property="blogTextField" destination="wP3-lC-TST" id="b9K-77-eu7"/>
+                        <outlet property="stackView" destination="IuU-zC-WkD" id="Vy0-wy-RNv"/>
+                        <outlet property="usernameLabel" destination="YZI-cj-TmG" id="gnO-jZ-KBK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>

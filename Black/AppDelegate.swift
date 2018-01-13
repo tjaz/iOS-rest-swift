@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  Black
 //
-//  Created by Tjaz Hrovat on 26/12/2017.
-//  Copyright © 2017 Tjaz Hrovat. All rights reserved.
+//  Created by Tjaz Hrovat on 05/01/2018.
+//  Copyright © 2018 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit

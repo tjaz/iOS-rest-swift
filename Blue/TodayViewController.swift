@@ -2,8 +2,8 @@
 //  TodayViewController.swift
 //  Blue
 //
-//  Created by Tjaz Hrovat on 26/12/2017.
-//  Copyright © 2017 Tjaz Hrovat. All rights reserved.
+//  Created by Tjaz Hrovat on 05/01/2018.
+//  Copyright © 2018 Tjaz Hrovat. All rights reserved.
 //
 
 import UIKit
@@ -11,29 +11,27 @@ import NotificationCenter
 import GithubConnectKit
 
 class TodayViewController: UIViewController, NCWidgetProviding, UIGestureRecognizerDelegate {
-    
     struct UserCodable: Codable {
         let login: String
         let blog: String?
     }
+    
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var blogTexView: UITextView!
+    @IBOutlet weak var blogTextField: UITextView!
     
-    var propertyAnimator: UIViewPropertyAnimator?
-    
-    @objc func onUsernameLabelTapped() {
-        print("ON USER LABEL TAPPED")
+    @objc func onStackViewTapped() {
+        print("STACK VIEW TAPPED")
         
         guard let blackURL = URL(string: "Black://") else {
+            print("Unable to parse Main application URL")
             return
         }
-        
-        self.extensionContext?.open(blackURL, completionHandler: { (isOpening) in
-            if isOpening {
-                print("SWITCHING TO BLACK")
+        self.extensionContext!.open(blackURL) { (isOpened) in
+            if isOpened {
+                print("BLACK HAS OPENED")
             }
-        })
+        }
     }
     
     func random(top: Int) -> Int {
@@ -42,40 +40,26 @@ class TodayViewController: UIViewController, NCWidgetProviding, UIGestureRecogni
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector (onUsernameLabelTapped))
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.onStackViewTapped))
         tapGestureRecognizer.delegate = self
-        self.usernameLabel.isUserInteractionEnabled = true
-        self.usernameLabel.addGestureRecognizer(tapGestureRecognizer)
+        self.stackView.addGestureRecognizer(tapGestureRecognizer)
         
-        self.propertyAnimator = UIViewPropertyAnimator(duration: 0.5, curve: UIViewAnimationCurve.linear, animations: {
-            self.stackView.layer.opacity = 1
-        })
-        
-        self.stackView.layer.opacity = 0
-        
-        Rest.getJavaDevelopers(page: random(top: 10) + 1, perPage: 1, userCallback: { (url) in
-            print("SHOW USER")
+        Rest.getJavaDevelopers(page: random(top: 10) + 1, perPage: 1, userCallback: { (userURL) in
+            print("USER RETRIEVED")
             let decoder = JSONDecoder()
-            let userData = try Data(contentsOf: url)
+            let userData = try Data(contentsOf: userURL)
             let userDecoded = try decoder.decode(UserCodable.self, from: userData)
             
             DispatchQueue.main.async {
+                self.stackView.isHidden = false
                 self.usernameLabel.text = userDecoded.login
-                if let blog = userDecoded.blog {
-                    self.blogTexView.text = blog
-                    self.self.blogTexView.isHidden = false
-                } else {
-                    self.self.blogTexView.isHidden = true
-                }
+                self.blogTextField.text = userDecoded.blog
             }
             
         }) { (error) in
             if let error = error {
                 print(error)
-                return
-            }
-            DispatchQueue.main.async {
-                self.propertyAnimator?.startAnimation()
             }
         }
     }
